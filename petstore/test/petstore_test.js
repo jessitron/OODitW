@@ -25,9 +25,9 @@ var itemdef = require('../lib/itemdef.js');
 
 exports['summarizeSale'] = {
   setUp: function(done) {
-    itemdef.defineItem({ id: 123, description: "dog brush", price: 5.00});
-    itemdef.defineItem({ id: 456, description: "catnip", price: 3.50});
-    itemdef.defineItem({ id: 789, description: "hamster ball", price: 15.00});
+    itemdef.defineItem({ id: 123, description: "dog brush", price: 500});
+    itemdef.defineItem({ id: 456, description: "catnip", price: 350});
+    itemdef.defineItem({ id: 789, description: "hamster ball", price: 1500});
     done();
   },
   'line items': function(test) {
@@ -35,17 +35,23 @@ exports['summarizeSale'] = {
     test.equal(petstore.summarizeSale([123,456,789]).lineItems.length, 3, 'should have 3 lines');
     test.done();
   },
+  'tax': function(test) {
+    test.expect(1);
+    test.equal(petstore.summarizeSale([123,456,789]).totalTax, 212, 'should be 9% of total');
+    test.done();
+  },
   'total price': function(test) {
     test.expect(1);
-    test.equal(petstore.summarizeSale([123,456,789]).totalPrice, 23.50, 'should total the items');
+    test.equal(petstore.summarizeSale([123,456,789]).totalPrice, 2350, 'should total the items');
     test.done();
   },
   'line item contents': function(test) {
-    test.expect(3);
+    test.expect(4);
     var lineItem =petstore.summarizeSale([123]).lineItems[0];
     test.equal(lineItem.description, "dog brush", 'should provide description');
-    test.equal(lineItem.originalPrice, 5.00, 'should provide description');
-    test.equal(lineItem.sellingPrice, 5.00, 'should provide description');
+    test.equal(lineItem.originalPrice, 500, 'should provide description');
+    test.equal(lineItem.sellingPrice, 500, 'should provide description');
+    test.equal(lineItem.tax, 45, 'should provide description');
     test.done();
   },
 };
