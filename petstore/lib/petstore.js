@@ -36,6 +36,8 @@ var formatMoney = function(pennies) {
   return sp.sprintf("%.2f", (pennies / 100));
 };
 
+var RECEIPT_FORMAT_STRING = "%-18s%6s";
+var RECEIPT_SUMMARY_FORMAT_STRING = "%17s%7s";
 
 // trial feature: service duration
 var singleServiceToLineItem = function(serviceItem) {
@@ -58,7 +60,7 @@ var isService = function(lineItem) {
 };
 
 var formatServiceReceiptLine = function(lineItem) {
-  return lineItem.description + " " + lineItem.duration + "m    " + formatMoney(lineItem.sellingPrice);
+  return sp.sprintf(RECEIPT_FORMAT_STRING,lineItem.description + " " + lineItem.duration + "m", formatMoney(lineItem.sellingPrice));
 };
 
 // public API
@@ -80,15 +82,13 @@ var formatReceiptLine = function(lineItem) {
   {
     return formatServiceReceiptLine(lineItem);
   }
-  return sp.sprintf("%-13s%6s", lineItem.description, formatMoney(lineItem.sellingPrice));
+  return sp.sprintf(RECEIPT_FORMAT_STRING, lineItem.description, formatMoney(lineItem.sellingPrice));
 };
 
 exports.formatReceipt = function(summarizedSale) {
-  //var width = 19;
-  // TODO: make this work when I have google
   var itemLines = _.map(summarizedSale.lineItems, formatReceiptLine);
-  var taxLine   = "         tax   " + formatMoney(summarizedSale.totalTax);
-  var totalLine = "         total " + formatMoney(summarizedSale.totalPrice);
+  var taxLine   = sp.sprintf(RECEIPT_SUMMARY_FORMAT_STRING, "tax  ", formatMoney(summarizedSale.totalTax));
+  var totalLine = sp.sprintf(RECEIPT_SUMMARY_FORMAT_STRING, "total", formatMoney(summarizedSale.totalPrice));
 
   return itemLines.concat(taxLine, totalLine);
 };
