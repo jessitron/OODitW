@@ -55,3 +55,28 @@ exports['summarizeSale'] = {
     test.done();
   },
 };
+
+exports['printReceipt'] = {
+  'receipt format': function(test) {
+    var summarizedSale = {
+      lineItems: [
+        { description: "dog brush",
+          originalPrice: 500,
+          sellingPrice: 500,
+        },
+        { description: "catnip",
+          originalPrice: 350,
+          sellingPrice: 350,
+        }],
+        totalPrice: 850,
+        totalTax: 77,
+    };
+    var result = petstore.formatReceipt(summarizedSale);
+    test.expect(1);
+    //test.equal(result[0], "dog brush      5.00");
+    //test.equal(result[1], "catnip         3.50");
+    test.equal(result[2], "         tax   0.77");
+    //test.equal(result[3], "         total 8.50");
+    test.done();
+  },
+};
