@@ -10,7 +10,7 @@ var field = function(key) {
 
 var PLUS = function(a,b) { return a + b;};
 
-var sumField = function(things, key) {
+var sumProperty = function(things, key) {
   return _.reduce(_.map(things, field(key)), PLUS);
 };
 
@@ -21,9 +21,10 @@ var calculateTax = function(price) {
 };
 
 var definitionToLineItem = function(itemDefinition) {
+  var sellingPrice= itemDefinition.price;
+
   var output = {};
   output.description = itemDefinition.description;
-  var sellingPrice= itemDefinition.price;
   output.sellingPrice = sellingPrice;
   output.originalPrice = itemDefinition.price;
   output.tax = calculateTax(sellingPrice);
@@ -32,15 +33,14 @@ var definitionToLineItem = function(itemDefinition) {
 
 // public API
 
-exports.summarizeSale = function(item_ids) {
-  var itemDefinitions = _.map(item_ids, itemdef.getDefinition);
+exports.summarizeSale = function(itemIds) {
+  var itemDefinitions = _.map(itemIds, itemdef.getDefinition);
   var lineItems = _.map(itemDefinitions, definitionToLineItem);
-  var totalPrice = sumField(lineItems, 'sellingPrice');
 
   var summarizedSale = {};
   summarizedSale.lineItems = lineItems;
-  summarizedSale.totalPrice = totalPrice;
-  summarizedSale.totalTax = sumField(lineItems, 'tax');
+  summarizedSale.totalPrice = sumProperty(lineItems, 'sellingPrice');
+  summarizedSale.totalTax = sumProperty(lineItems, 'tax');
   return summarizedSale;
 };
 
