@@ -1,6 +1,7 @@
 'use strict';
 var itemdef = require('./itemdef.js');
 var _ = require('underscore');
+var sp = require('sprintf-js');
 
 var field = function(key) {
   return function(thing) {
@@ -32,7 +33,7 @@ var definitionToLineItem = function(itemDefinition) {
 };
 
 var formatMoney = function(pennies) {
-  return pennies / 100;
+  return sp.sprintf("%.2f", (pennies / 100));
 };
 
 
@@ -79,7 +80,7 @@ var formatReceiptLine = function(lineItem) {
   {
     return formatServiceReceiptLine(lineItem);
   }
-  return lineItem.description + "      " + formatMoney(lineItem.sellingPrice);
+  return sp.sprintf("%-13s%6s", lineItem.description, formatMoney(lineItem.sellingPrice));
 };
 
 exports.formatReceipt = function(summarizedSale) {

@@ -72,11 +72,11 @@ exports['printReceipt'] = {
         totalTax: 77,
     };
     var result = petstore.formatReceipt(summarizedSale);
-    test.expect(1);
-    //test.equal(result[0], "dog brush      5.00");
-    //test.equal(result[1], "catnip         3.50");
+    test.expect(4);
+    test.equal(result[0], "dog brush      5.00");
+    test.equal(result[1], "catnip         3.50");
     test.equal(result[2], "         tax   0.77");
-    //test.equal(result[3], "         total 8.50");
+    test.equal(result[3], "         total 8.50");
     test.done();
   },
 };
@@ -87,9 +87,9 @@ exports['trial feature: service durations'] = {
     var sale = petstore.summarizeSale([],[{id: 1111, duration: 8}]);
     var receipt = petstore.formatReceipt(sale);
     test.expect(3);
-    test.equal(receipt[0], "grooming 8m    8"); // TODO: should be 8.00
-    test.equal(receipt[1], "         tax   0"); // TODO: should be 0.00
-    test.equal(receipt[2], "         total 8");// TODO: should be 8.00
+    test.equal(receipt[0], "grooming 8m    8.00");
+    test.equal(receipt[1], "         tax   0.00");
+    test.equal(receipt[2], "         total 8.00");
     test.done();
   },
 };
