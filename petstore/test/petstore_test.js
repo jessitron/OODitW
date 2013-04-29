@@ -28,7 +28,7 @@ exports['summarizeSale'] = {
     itemdef.defineItem({ id: 123, description: "dog brush", price: 500});
     itemdef.defineItem({ id: 456, description: "catnip", price: 350});
     itemdef.defineItem({ id: 789, description: "hamster ball", price: 1500});
-    itemdef.defineItem({ id: 1111, description: "massage, 15 min", price: 1500, isTaxable: false});
+    itemdef.defineItem({ id: 1111, description: "massage, 15 min", price: 1500, isService: true});
     done();
   },
   'line items': function(test) {

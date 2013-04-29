@@ -18,10 +18,10 @@ var sumProperty = function(things, key) {
 // business-relevant methods
 
 var calculateTax = function(itemDefinition, price) {
-  if (itemDefinition.isTaxable) {
-    return Math.round(price * 0.09);
-  } else {
+  if (itemDefinition.isService) {
     return 0;
+  } else {
+    return Math.round(price * 0.09);
   }
 };
 
