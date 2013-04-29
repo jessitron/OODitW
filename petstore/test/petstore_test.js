@@ -28,11 +28,17 @@ exports['summarizeSale'] = {
     itemdef.defineItem({ id: 123, description: "dog brush", price: 500});
     itemdef.defineItem({ id: 456, description: "catnip", price: 350});
     itemdef.defineItem({ id: 789, description: "hamster ball", price: 1500});
+    itemdef.defineItem({ id: 1111, description: "massage, 15 min", price: 1500, isTaxable: false});
     done();
   },
   'line items': function(test) {
     test.expect(1);
     test.equal(petstore.summarizeSale([123,456,789]).lineItems.length, 3, 'should have 3 lines');
+    test.done();
+  },
+  'nontaxable item': function(test) {
+    test.expect(1);
+    test.equal(petstore.summarizeSale([1111,456,789]).lineItems[0].tax, 0, 'should be 0 for service');
     test.done();
   },
   'tax': function(test) {
@@ -49,9 +55,9 @@ exports['summarizeSale'] = {
     test.expect(4);
     var lineItem =petstore.summarizeSale([123]).lineItems[0];
     test.equal(lineItem.description, "dog brush", 'should provide description');
-    test.equal(lineItem.originalPrice, 500, 'should provide description');
-    test.equal(lineItem.sellingPrice, 500, 'should provide description');
-    test.equal(lineItem.tax, 45, 'should provide description');
+    test.equal(lineItem.originalPrice, 500, 'should provide original price');
+    test.equal(lineItem.sellingPrice, 500, 'should provide selling price');
+    test.equal(lineItem.tax, 45, 'should provide tax');
     test.done();
   },
 };
@@ -81,15 +87,3 @@ exports['printReceipt'] = {
   },
 };
 
-exports['trial feature: service durations'] = {
-  'all the way through': function(test) {
-    itemdef.defineItem({id: 1111, description: "grooming", price: 100});
-    var sale = petstore.summarizeSale([],[{id: 1111, duration: 8}]);
-    var receipt = petstore.formatReceipt(sale);
-    test.expect(3);
-    test.equal(receipt[0], "grooming 8m         8.00");
-    test.equal(receipt[1], "            tax     0.00");
-    test.equal(receipt[2], "            total   8.00");
-    test.done();
-  },
-};

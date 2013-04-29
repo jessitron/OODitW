@@ -7,6 +7,7 @@ var EMPTY_ITEM = {
   id: 0,
   description: "",
   price: 0.00,
+  isTaxable: true,
 };
 
 exports.getDefinition = function(item_id) {
